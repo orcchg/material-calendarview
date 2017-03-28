@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode project.ext.versionCodeInt
-        versionName version
+        versionCode 18
+        versionName "1.4.3"
     }
 
     lintOptions {
@@ -54,56 +54,6 @@ def getRepositoryUsername() {
 
 def getRepositoryPassword() {
     return hasProperty('sonatypePassword') ? sonatypePassword : ""
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-        repository(url: getReleaseRepositoryUrl()) {
-            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-        }
-
-        snapshotRepository(url: getSnapshotRepositoryUrl()) {
-            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-        }
-
-        pom.groupId = GROUP
-        pom.version = version
-        pom.artifactId = POM_ARTIFACT_ID
-
-        pom {
-            project {
-                name POM_NAME
-                packaging POM_PACKAGING
-                description POM_DESCRIPTION
-                url POM_URL
-
-                scm {
-                    url POM_SCM_URL
-                    connection POM_SCM_CONNECTION
-                    developerConnection POM_SCM_DEV_CONNECTION
-                }
-
-                licenses {
-                    license {
-                        name POM_LICENCE_NAME
-                        url POM_LICENCE_URL
-                        distribution POM_LICENCE_DIST
-                    }
-                }
-
-                developers {
-                    developer {
-                        id POM_DEVELOPER_ID
-                        name POM_DEVELOPER_NAME
-                        email POM_DEVELOPER_EMAIL
-                    }
-                }
-
-            }
-        }
-    }
 }
 
 android.libraryVariants.all { variant ->
