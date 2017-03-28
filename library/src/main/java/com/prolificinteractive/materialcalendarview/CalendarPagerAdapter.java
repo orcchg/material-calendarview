@@ -1,7 +1,9 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,7 +30,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
     private Integer dateTextAppearance = null;
+    private String dateTextTypeface = null;
     private Integer weekDayTextAppearance = null;
+    private String weekDayTextTypeface = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
@@ -148,8 +152,14 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         if (dateTextAppearance != null) {
             pagerView.setDateTextAppearance(dateTextAppearance);
         }
+        if (dateTextTypeface != null) {
+            pagerView.setDateTextTypeface(obtainTypeface(dateTextTypeface));
+        }
         if (weekDayTextAppearance != null) {
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
+        }
+        if (weekDayTextTypeface != null) {
+            pagerView.setWeekDayTextTypeface(obtainTypeface(weekDayTextTypeface));
         }
         pagerView.setShowOtherDates(showOtherDates);
         pagerView.setMinimumDate(minDate);
@@ -204,6 +214,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
     }
 
+    public void setDateTextTypeface(String tf) {
+        if (TextUtils.isEmpty(tf)) {
+            return;
+        }
+        this.dateTextTypeface = tf;
+        Typeface typeface = obtainTypeface(tf);
+        for (V pagerView : currentViews) {
+            pagerView.setDateTextTypeface(typeface);
+        }
+    }
+
     public void setShowOtherDates(@ShowOtherDates int showFlags) {
         this.showOtherDates = showFlags;
         for (V pagerView : currentViews) {
@@ -237,6 +258,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         this.weekDayTextAppearance = taId;
         for (V pagerView : currentViews) {
             pagerView.setWeekDayTextAppearance(taId);
+        }
+    }
+
+    public void setWeekDayTextTypeface(String tf) {
+        if (TextUtils.isEmpty(tf)) {
+            return;
+        }
+        this.weekDayTextTypeface = tf;
+        Typeface typeface = obtainTypeface(tf);
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayTextTypeface(typeface);
         }
     }
 
@@ -317,7 +349,21 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         return dateTextAppearance == null ? 0 : dateTextAppearance;
     }
 
+    protected String getDateTextTypeface() {
+        return dateTextTypeface;
+    }
+
     protected int getWeekDayTextAppearance() {
         return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
+    }
+
+    protected String getWeekDayTextTypeface() {
+        return weekDayTextTypeface;
+    }
+
+    /* Internal */
+    // --------------------------------------------------------------------------------------------
+    private Typeface obtainTypeface(String tf) {
+        return Typeface.createFromAsset(mcv.getContext().getAssets(), "fonts/" + tf + ".ttf");
     }
 }

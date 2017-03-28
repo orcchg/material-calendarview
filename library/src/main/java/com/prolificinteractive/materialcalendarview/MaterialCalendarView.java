@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -13,6 +14,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -41,6 +43,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import static android.graphics.Typeface.createFromAsset;
 
 /**
  * <p>
@@ -357,14 +361,17 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_headerTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Header
             ));
+            setHeaderTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_headerTextFont));
             setWeekDayTextAppearance(a.getResourceId(
                     R.styleable.MaterialCalendarView_mcv_weekDayTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ));
+            setWeekDayTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_weekDayTextFont));
             setDateTextAppearance(a.getResourceId(
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
+            setDateTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_dateTextFont));
             //noinspection ResourceType
             setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
@@ -744,6 +751,10 @@ public class MaterialCalendarView extends ViewGroup {
         title.setTextAppearance(getContext(), resourceId);
     }
 
+    public void setHeaderTextTypeface(String tf) {
+        title.setTypeface(obtainTypeface(tf));
+    }
+
     /**
      * @param resourceId The text appearance resource id.
      */
@@ -751,11 +762,19 @@ public class MaterialCalendarView extends ViewGroup {
         adapter.setDateTextAppearance(resourceId);
     }
 
+    public void setDateTextTypeface(String tf) {
+        adapter.setDateTextTypeface(tf);
+    }
+
     /**
      * @param resourceId The text appearance resource id.
      */
     public void setWeekDayTextAppearance(int resourceId) {
         adapter.setWeekDayTextAppearance(resourceId);
+    }
+
+    public void setWeekDayTextTypeface(String tf) {
+        adapter.setWeekDayTextTypeface(tf);
     }
 
     /**
@@ -1067,7 +1086,9 @@ public class MaterialCalendarView extends ViewGroup {
         SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.color = getSelectionColor();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
+        ss.dateTextTypeface = adapter.getDateTextTypeface();
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
+        ss.weekDayTextTypeface = adapter.getWeekDayTextTypeface();
         ss.showOtherDates = getShowOtherDates();
         ss.allowClickDaysOutsideCurrentMonth = allowClickDaysOutsideCurrentMonth();
         ss.minDate = getMinimumDate();
@@ -1100,7 +1121,9 @@ public class MaterialCalendarView extends ViewGroup {
 
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
+        setDateTextTypeface(ss.dateTextTypeface);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
+        setWeekDayTextTypeface(ss.weekDayTextTypeface + ".ttf");
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
         clearSelection();
@@ -1142,7 +1165,9 @@ public class MaterialCalendarView extends ViewGroup {
 
         int color = 0;
         int dateTextAppearance = 0;
+        String dateTextTypeface;
         int weekDayTextAppearance = 0;
+        String weekDayTextTypeface = null;
         int showOtherDates = SHOW_DEFAULTS;
         boolean allowClickDaysOutsideCurrentMonth = true;
         CalendarDay minDate = null;
@@ -2013,5 +2038,12 @@ public class MaterialCalendarView extends ViewGroup {
 
         invalidateDecorators();
         updateUi();
+    }
+
+    /* Internal */
+    // --------------------------------------------------------------------------------------------
+    private Typeface obtainTypeface(String tf) {
+        String path = "fonts/" + (TextUtils.isEmpty(tf) ? "Montserrat-Regular" : tf) + ".ttf";
+        return Typeface.createFromAsset(getContext().getAssets(), path);
     }
 }
