@@ -222,6 +222,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
+    private String currentDateTypeface;
 
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
@@ -371,6 +372,8 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
+            currentDateTypeface = a.getString(R.styleable.MaterialCalendarView_mcv_currentDateTextFont);
+            setCurrentDateTextTypeface(currentDateTypeface);
             setDateTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_dateTextFont));
             //noinspection ResourceType
             setShowOtherDates(a.getInteger(
@@ -755,6 +758,10 @@ public class MaterialCalendarView extends ViewGroup {
         title.setTypeface(obtainTypeface(tf));
     }
 
+    public void setCurrentDateTextTypeface(String tf) {
+        adapter.setCurrentDateTextTypeface(tf);
+    }
+
     /**
      * @param resourceId The text appearance resource id.
      */
@@ -1085,6 +1092,7 @@ public class MaterialCalendarView extends ViewGroup {
     protected Parcelable onSaveInstanceState() {
         SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.color = getSelectionColor();
+        ss.currentDateTextTypeface = adapter.getCurrentDateTextTypeface();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
         ss.dateTextTypeface = adapter.getDateTextTypeface();
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
@@ -1120,6 +1128,7 @@ public class MaterialCalendarView extends ViewGroup {
                 .commit();
 
         setSelectionColor(ss.color);
+        setCurrentDateTextTypeface(ss.currentDateTextTypeface);
         setDateTextAppearance(ss.dateTextAppearance);
         setDateTextTypeface(ss.dateTextTypeface);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
@@ -1164,6 +1173,7 @@ public class MaterialCalendarView extends ViewGroup {
     public static class SavedState extends BaseSavedState {
 
         int color = 0;
+        String currentDateTextTypeface;
         int dateTextAppearance = 0;
         String dateTextTypeface;
         int weekDayTextAppearance = 0;
@@ -2021,6 +2031,7 @@ public class MaterialCalendarView extends ViewGroup {
         } else {
             adapter = adapter.migrateStateAndReturn(newAdapter);
         }
+        setCurrentDateTextTypeface(currentDateTypeface);
         pager.setAdapter(adapter);
         setRangeDates(minDate, maxDate);
 

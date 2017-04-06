@@ -7,6 +7,7 @@
         <attr name="mcv_weekDayTextAppearance" format="reference" />
         <attr name="mcv_headerTextAppearance" format="reference" />
 
+        <attr name="mcv_currentDateTextFont" format="string"/>
         <attr name="mcv_dateTextFont" format="string"/>
         <attr name="mcv_weekDayTextFont" format="string"/>
         <attr name="mcv_headerTextFont" format="string"/>

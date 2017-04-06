@@ -29,6 +29,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
+    private String currentDateTextTypeface = null;
     private Integer dateTextAppearance = null;
     private String dateTextTypeface = null;
     private Integer weekDayTextAppearance = null;
@@ -149,6 +150,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         if (color != null) {
             pagerView.setSelectionColor(color);
         }
+        if (currentDateTextTypeface != null) {
+            pagerView.setCurrentDateTextTypeface(obtainTypeface(currentDateTextTypeface));
+        }
         if (dateTextAppearance != null) {
             pagerView.setDateTextAppearance(dateTextAppearance);
         }
@@ -201,6 +205,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         this.color = color;
         for (V pagerView : currentViews) {
             pagerView.setSelectionColor(color);
+        }
+    }
+
+    public void setCurrentDateTextTypeface(String tf) {
+        if (TextUtils.isEmpty(tf)) {
+            return;
+        }
+        this.currentDateTextTypeface = tf;
+        Typeface typeface = obtainTypeface(tf);
+        for (V pagerView : currentViews) {
+            pagerView.setCurrentDateTextTypeface(typeface);
         }
     }
 
@@ -343,6 +358,10 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     @NonNull
     public List<CalendarDay> getSelectedDates() {
         return Collections.unmodifiableList(selectedDates);
+    }
+
+    protected String getCurrentDateTextTypeface() {
+        return currentDateTextTypeface;
     }
 
     protected int getDateTextAppearance() {

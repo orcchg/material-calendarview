@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -113,6 +114,18 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public void setWeekDayTextTypeface(Typeface tf) {
         for (WeekDayView weekDayView : weekDayViews) {
             weekDayView.setTypeface(tf);
+        }
+    }
+
+    public void setCurrentDateTextTypeface(Typeface tf) {
+        CalendarDay today = CalendarDay.today();
+        for (DayView dayView : dayViews) {
+            CalendarDay day = dayView.getDate();
+            if (today.equals(day)) {
+                dayView.setTextColor(Color.RED);
+                dayView.setTypeface(tf);
+                break;
+            }
         }
     }
 
