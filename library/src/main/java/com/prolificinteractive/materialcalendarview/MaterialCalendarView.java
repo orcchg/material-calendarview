@@ -1132,7 +1132,7 @@ public class MaterialCalendarView extends ViewGroup {
         setDateTextAppearance(ss.dateTextAppearance);
         setDateTextTypeface(ss.dateTextTypeface);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
-        setWeekDayTextTypeface(ss.weekDayTextTypeface + ".ttf");
+        setWeekDayTextTypeface(ss.weekDayTextTypeface);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
         clearSelection();
@@ -2031,7 +2031,6 @@ public class MaterialCalendarView extends ViewGroup {
         } else {
             adapter = adapter.migrateStateAndReturn(newAdapter);
         }
-        setCurrentDateTextTypeface(currentDateTypeface);
         pager.setAdapter(adapter);
         setRangeDates(minDate, maxDate);
 

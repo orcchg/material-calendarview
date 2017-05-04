@@ -122,7 +122,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         for (DayView dayView : dayViews) {
             CalendarDay day = dayView.getDate();
             if (today.equals(day)) {
-                dayView.setTextColor(Color.RED);
                 dayView.setTypeface(tf);
                 break;
             }
