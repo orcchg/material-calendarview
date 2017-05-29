@@ -183,6 +183,10 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay currentMonth;
     private LinearLayout topbar;
     private CalendarMode calendarMode;
+
+    private static int inactiveColor = -1;
+    private static int normalColor = -1;
+
     /**
      * Used for the dynamic calendar height.
      */
@@ -248,6 +252,10 @@ public class MaterialCalendarView extends ViewGroup {
 
     public MaterialCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        if (inactiveColor == -1) inactiveColor = getResources().getColor(R.color.inactive);
+        if (normalColor == -1) normalColor = getResources().getColor(R.color.textPrimary);
+        arrowColor = normalColor;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //If we're on good Android versions, turn off clipping for cool effects
@@ -324,7 +332,7 @@ public class MaterialCalendarView extends ViewGroup {
 
             setArrowColor(a.getColor(
                     R.styleable.MaterialCalendarView_mcv_arrowColor,
-                    Color.BLACK
+                    normalColor
             ));
             Drawable leftMask = a.getDrawable(
                     R.styleable.MaterialCalendarView_mcv_leftArrowMask
@@ -651,7 +659,7 @@ public class MaterialCalendarView extends ViewGroup {
             if (!isInEditMode()) {
                 return;
             } else {
-                color = Color.GRAY;
+                color = inactiveColor;
             }
         }
         accentColor = color;
@@ -766,7 +774,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param resourceId The text appearance resource id.
      */
     public void setDateTextAppearance(int resourceId) {
-        adapter.setDateTextAppearance(resourceId);
+//        adapter.setDateTextAppearance(resourceId);
     }
 
     public void setDateTextTypeface(String tf) {

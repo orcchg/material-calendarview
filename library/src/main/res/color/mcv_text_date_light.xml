@@ -10,9 +10,9 @@
         android:color="@android:color/white" />
 
     <item android:state_enabled="false"
-        android:color="#808080" />
+        android:color="@color/inactive" />
 
-    <item android:color="@android:color/black" />
+    <item android:color="@color/textPrimary" />
 
 
 </selector>

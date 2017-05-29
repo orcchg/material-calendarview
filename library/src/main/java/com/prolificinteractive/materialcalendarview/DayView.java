@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -35,10 +36,17 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 @SuppressLint("ViewConstructor")
 class DayView extends CheckedTextView {
 
+    private CalendarDay today = CalendarDay.today();
     private CalendarDay date;
-    private int selectionColor = Color.GRAY;
+    private int selectionColor = -1;
 
-    private final int fadeTime;
+    private static int fadeTime = -1;
+    private static ColorStateList colorStateList;
+    private static int inactiveColor = -1;
+    private static int normalColor = -1;
+    private static Typeface boldTf;
+    private static int textSize = -1;
+
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
     private Drawable mCircleDrawable;
@@ -50,10 +58,23 @@ class DayView extends CheckedTextView {
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
-    public DayView(Context context, CalendarDay day) {
+    public DayView(Context context) {
         super(context);
 
-        fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        if (inactiveColor == -1) inactiveColor = getResources().getColor(R.color.inactive);
+        if (normalColor == -1) normalColor = getResources().getColor(R.color.textPrimary);
+        if (fadeTime == -1) fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        if (colorStateList == null) colorStateList = getResources().getColorStateList(R.color.mcv_text_date_light);
+        if (boldTf == null) boldTf = Typeface.createFromAsset(context.getAssets(), "fonts/Montserrat-Bold.ttf");
+        if (textSize == -1) textSize = getResources().getDimensionPixelSize(R.dimen.calendar_tile_text_size);
+
+        selectionColor = inactiveColor;
+        setTextColor(colorStateList);
+        setTextSize(12 /* SP */);
+    }
+
+    public DayView(Context context, CalendarDay day) {
+        this(context);
 
         setSelectionColor(this.selectionColor);
 
@@ -69,6 +90,10 @@ class DayView extends CheckedTextView {
     public void setDay(CalendarDay date) {
         this.date = date;
         setText(getLabel());
+
+        if (today.equals(date)) {
+            setTypeface(boldTf);
+        }
     }
 
     /**
@@ -154,7 +179,7 @@ class DayView extends CheckedTextView {
 
         if (!isInMonth && shouldBeVisible) {
             setTextColor(getTextColors().getColorForState(
-                    new int[]{-android.R.attr.state_enabled}, Color.GRAY));
+                    new int[]{-android.R.attr.state_enabled}, inactiveColor));
         }
         setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
     }
