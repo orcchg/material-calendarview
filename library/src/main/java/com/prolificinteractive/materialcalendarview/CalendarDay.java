@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * An imputable representation of a day on a calendar
  */
-public final class CalendarDay implements Parcelable {
+public final class CalendarDay implements Comparable<CalendarDay>, Parcelable {
 
     /**
      * Get a new instance set to today
@@ -276,6 +276,19 @@ public final class CalendarDay implements Parcelable {
 
     public CalendarDay(Parcel in) {
         this(in.readInt(), in.readInt(), in.readInt());
+    }
+
+    @Override
+    public int compareTo(@NonNull CalendarDay other) {
+        int yearDiff = year - other.year;
+        if (yearDiff == 0) {
+            int monthDiff = month - other.month;
+            if (monthDiff == 0) {
+                return day - other.day;
+            }
+            return monthDiff;
+        }
+        return yearDiff;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.prolificinteractive.materialcalendarview;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
