@@ -42,9 +42,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
-
-import static android.graphics.Typeface.createFromAsset;
 
 /**
  * <p>
@@ -2061,7 +2060,6 @@ public class MaterialCalendarView extends ViewGroup {
     /* Internal */
     // --------------------------------------------------------------------------------------------
     private Typeface obtainTypeface(String tf) {
-        String path = "fonts/" + (TextUtils.isEmpty(tf) ? "Montserrat-Regular" : tf) + ".ttf";
-        return Typeface.createFromAsset(getContext().getAssets(), path);
+        return TypefaceStore.getInstance(getContext()).get(tf);
     }
 }

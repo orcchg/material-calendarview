@@ -383,6 +383,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     /* Internal */
     // --------------------------------------------------------------------------------------------
     private Typeface obtainTypeface(String tf) {
-        return Typeface.createFromAsset(mcv.getContext().getAssets(), "fonts/" + tf + ".ttf");
+        return TypefaceStore.getInstance(mcv.getContext()).get(tf);
     }
 }

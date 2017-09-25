@@ -65,7 +65,7 @@ class DayView extends CheckedTextView {
         if (normalColor == -1) normalColor = getResources().getColor(R.color.textPrimary);
         if (fadeTime == -1) fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         if (colorStateList == null) colorStateList = getResources().getColorStateList(R.color.mcv_text_date_light);
-        if (boldTf == null) boldTf = Typeface.createFromAsset(context.getAssets(), "fonts/Montserrat-Bold.ttf");
+        if (boldTf == null) boldTf = TypefaceStore.getInstance(context).get("Montserrat-Bold");
         if (textSize == -1) textSize = getResources().getDimensionPixelSize(R.dimen.calendar_tile_text_size);
 
         selectionColor = inactiveColor;
