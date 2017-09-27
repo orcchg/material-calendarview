@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -165,6 +166,14 @@ public final class CalendarDay implements Comparable<CalendarDay>, Parcelable {
         return _date;
     }
 
+    public Date toDate(Calendar calendar) {
+        Date initTime = calendar.getTime();
+        calendar.set(year, month, day);
+        Date date = calendar.getTime();
+        calendar.setTime(initTime);  // restore initial calendar state
+        return date;
+    }
+
     /**
      * Get this day as a {@linkplain Calendar}
      *
@@ -268,6 +277,23 @@ public final class CalendarDay implements Comparable<CalendarDay>, Parcelable {
     @Override
     public String toString() {
         return "CalendarDay{" + year + "-" + month + "-" + day + "}";
+    }
+
+    public String easy() {
+        StringBuilder builder = new StringBuilder("" + day);
+        builder.append('.').append(month).append('.').append(year);
+        return builder.toString();
+    }
+
+    public static CalendarDay fromEasy(String easy) throws NumberFormatException, ParseException {
+        String[] tokens = easy.split("\\.");
+        if (tokens.length >= 3) {
+            int day = Integer.parseInt(tokens[0]);
+            int month = Integer.parseInt(tokens[1]);
+            int year = Integer.parseInt(tokens[2]);
+            return CalendarDay.from(year, month, day);
+        }
+        throw new ParseException("Failed to parse CalendarDay from easy: " + easy, 0);
     }
 
     /*
