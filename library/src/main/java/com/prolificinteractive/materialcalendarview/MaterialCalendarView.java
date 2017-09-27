@@ -489,6 +489,32 @@ public class MaterialCalendarView extends ViewGroup {
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
     }
 
+    public void goToMonth(int month) {
+        if (calendarMode == CalendarMode.MONTHS) {
+            int minMonth = minDate.getMonth();
+            int maxMonth = maxDate.getMonth();
+            int position = 0;
+            if (minDate.getYear() >= maxDate.getYear()) {  // same year range
+                if (month >= maxMonth) {
+                    position = maxMonth;
+                } else if (month >= minMonth) {
+                    position = month - minMonth;
+                }  // else: month < minMonth (same year) - set 0 position
+            } else {
+                if (month < minMonth) {
+                    if (month <= maxMonth) {  // switch to the next year
+                        position = Calendar.DECEMBER - minMonth + month + 1;
+                    } else {
+                        position = Calendar.DECEMBER - minMonth + maxMonth + 1;
+                    }
+                } else {
+                    position = month - minMonth;
+                }
+            }
+            pager.setCurrentItem(position);
+        }
+    }
+
     /**
      * Go to previous month or week without using the button {@link #buttonPast}. Should only go to
      * previous if {@link #canGoBack()} is true, meaning it's possible to go to the previous month
