@@ -70,7 +70,7 @@ class DayView extends CheckedTextView {
 
         selectionColor = inactiveColor;
         setTextColor(colorStateList);
-        setTextSize(12 /* SP */);
+        setTextSize(14);
     }
 
     public DayView(Context context, CalendarDay day) {
