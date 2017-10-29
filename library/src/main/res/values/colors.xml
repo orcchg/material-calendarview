@@ -2,4 +2,5 @@
 <resources>
     <color name="inactive">#cacaca</color>
     <color name="textPrimary">#3c4d52</color>
+    <color name="tiffany">#60cdc5</color>
 </resources>

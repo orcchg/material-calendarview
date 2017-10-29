@@ -24,7 +24,7 @@ public class TypefaceStore {
 //            fonts.put("LucidaGrande-Bold", initTypeface(applicationContext, "LucidaGrande-Bold"));
         fonts.put("Montserrat-Bold", initTypeface(applicationContext, "Montserrat-Bold"));
         fonts.put("Montserrat-Light", initTypeface(applicationContext, "Montserrat-Light"));
-//            fonts.put("Montserrat-Medium", initTypeface(applicationContext, "Montserrat-Medium"));
+        fonts.put("Montserrat-Medium", initTypeface(applicationContext, "Montserrat-Medium"));
         fonts.put("Montserrat-Regular", initTypeface(applicationContext, "Montserrat-Regular"));
     }
 
