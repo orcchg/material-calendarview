@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="inactive">#cacaca</color>
+    <color name="inactive">#e3e7ec</color>
     <color name="textPrimary">#3c4d52</color>
     <color name="tiffany">#60cdc5</color>
 </resources>
