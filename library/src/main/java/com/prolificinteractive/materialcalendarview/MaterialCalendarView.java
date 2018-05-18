@@ -77,7 +77,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #setSelectionMode(int)
      * @see #getSelectionMode()
      */
-    @Retention(RetentionPolicy.RUNTIME)
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
     public @interface SelectionMode {
     }
@@ -112,7 +112,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getShowOtherDates()
      */
     @SuppressLint("UniqueConstants")
-    @Retention(RetentionPolicy.RUNTIME)
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef(flag = true, value = {
             SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
             SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
