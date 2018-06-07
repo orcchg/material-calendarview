@@ -142,33 +142,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     public void setDisabledDateOnThisMonthTypeface(Typeface tf) {
         DayView.disabledTypeface = tf;
-//        for (DayView dayView : dayViews) {
-//            if (dayView.isDecoratedDisabled()) dayView.setTypeface(tf);
-//        }
-    }
-
-    void setCurrentDateTextColor(@ColorInt int color) {
-//        CalendarDay today = CalendarDay.today();
-//        for (DayView dayView : dayViews) {
-//            CalendarDay day = dayView.getDate();
-//            if (today.equals(day)) {
-//                dayView.setTextColor(color);
-//                break;
-//            }
-//        }
-    }
-
-    public void setDateTextColor(@ColorInt int color) {
-//        DayView.normalColor = color;
-//        for (DayView dayView : dayViews) {
-//            dayView.setTextColor(color);
-//        }
-    }
-
-    public void setDisabledDateOnThisMonthTextColor(@ColorInt int color) {
-//        for (DayView dayView : dayViews) {
-//            if (dayView.isDecoratedDisabled()) dayView.setTextColor(color);
-//        }
     }
 
     public void setShowOtherDates(@ShowOtherDates int showFlags) {

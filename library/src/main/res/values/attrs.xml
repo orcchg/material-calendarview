@@ -7,10 +7,6 @@
         <attr name="mcv_weekDayTextAppearance" format="reference" />
         <attr name="mcv_headerTextAppearance" format="reference" />
 
-        <attr name="mcv_currentDateTextColor" format="reference"/>
-        <attr name="mcv_dateTextColor" format="reference"/>
-        <attr name="mcv_disabledDateOnThisMonthTextColor" format="reference"/>
-
         <attr name="mcv_currentDateTextFont" format="string"/>
         <attr name="mcv_dateTextFont" format="string"/>
         <attr name="mcv_disabledDateOnThisMonthTextFont" format="string"/>

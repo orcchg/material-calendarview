@@ -379,10 +379,6 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date_Active
             ));
-            // custom colors, set date text color before current
-            setDateTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_dateTextColor, normalColor));
-            setCurrentDateTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_currentDateTextColor, normalColor));
-            setDisabledDateOnThisMonthTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_disabledDateOnThisMonthTextColor, inactiveColor));
             // custom typeface (fonts), set date typeface before current
             setDateTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_dateTextFont));
             currentDateTypeface = a.getString(R.styleable.MaterialCalendarView_mcv_currentDateTextFont);
@@ -817,18 +813,6 @@ public class MaterialCalendarView extends ViewGroup {
         adapter.setDisabledDateOnThisMonthTypeface(tf);
     }
 
-    public void setCurrentDateTextColor(@ColorInt int color) {
-        adapter.setCurrentDateTextColor(color);
-    }
-
-    public void setDateTextColor(@ColorInt int color) {
-        adapter.setDateTextColor(color);
-    }
-
-    public void setDisabledDateOnThisMonthTextColor(@ColorInt int color) {
-        adapter.setDisabledDateOnThisMonthTextColor(color);
-    }
-
     /**
      * @param resourceId The text appearance resource id.
      */
@@ -1148,9 +1132,6 @@ public class MaterialCalendarView extends ViewGroup {
     protected Parcelable onSaveInstanceState() {
         SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.color = getSelectionColor();
-        ss.currentDateTextColor = adapter.getCurrentDateTextColor();
-        ss.dateTextColor = adapter.getDateTextColor();
-        ss.disabledDateOnThisMonthTextColor = adapter.getDisabledDateOnThisMonthTextColor();
         ss.currentDateTextTypeface = adapter.getCurrentDateTextTypeface();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
         ss.dateTextTypeface = adapter.getDateTextTypeface();
@@ -1188,9 +1169,6 @@ public class MaterialCalendarView extends ViewGroup {
                 .commit();
 
         setSelectionColor(ss.color);
-        setDateTextColor(ss.dateTextColor);  // set date text color before current
-        setCurrentDateTextColor(ss.currentDateTextColor);
-        setDisabledDateOnThisMonthTextColor(ss.disabledDateOnThisMonthTextColor);
         setDateTextTypeface(ss.dateTextTypeface);  // set date typeface before current
         setCurrentDateTextTypeface(ss.currentDateTextTypeface);
         setDateTextAppearance(ss.dateTextAppearance);
@@ -1237,9 +1215,6 @@ public class MaterialCalendarView extends ViewGroup {
     public static class SavedState extends BaseSavedState {
 
         int color = 0;  // selection color
-        int currentDateTextColor = 0;
-        int dateTextColor = 0;
-        int disabledDateOnThisMonthTextColor = 0;
         String currentDateTextTypeface;
         int dateTextAppearance = 0;
         String dateTextTypeface;
@@ -1270,9 +1245,6 @@ public class MaterialCalendarView extends ViewGroup {
         public void writeToParcel(@NonNull Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt(color);
-            out.writeInt(currentDateTextColor);
-            out.writeInt(dateTextColor);
-            out.writeInt(disabledDateOnThisMonthTextColor);
             out.writeString(currentDateTextTypeface);
             out.writeInt(dateTextAppearance);
             out.writeString(dateTextTypeface);
@@ -1310,9 +1282,6 @@ public class MaterialCalendarView extends ViewGroup {
         private SavedState(Parcel in) {
             super(in);
             color = in.readInt();
-            currentDateTextColor = in.readInt();
-            dateTextColor = in.readInt();
-            disabledDateOnThisMonthTextColor = in.readInt();
             currentDateTextTypeface = in.readString();
             dateTextAppearance = in.readInt();
             dateTextTypeface = in.readString();

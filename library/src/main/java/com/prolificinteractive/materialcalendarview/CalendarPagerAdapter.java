@@ -1,7 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
@@ -30,9 +29,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
-    private Integer currentDateTextColor = null;
-    private Integer dateTextColor = null;
-    private Integer disabledDateOnThisMonthTextColor = null;
     private String currentDateTextTypeface = null;
     private Integer dateTextAppearance = null;
     private String dateTextTypeface = null;
@@ -91,9 +87,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     public CalendarPagerAdapter<?> migrateStateAndReturn(CalendarPagerAdapter<?> newAdapter) {
         newAdapter.titleFormatter = titleFormatter;
         newAdapter.color = color;
-        newAdapter.currentDateTextColor = currentDateTextColor;
-        newAdapter.dateTextColor = dateTextColor;
-        newAdapter.disabledDateOnThisMonthTextColor = disabledDateOnThisMonthTextColor;
         newAdapter.currentDateTextTypeface = currentDateTextTypeface;
         newAdapter.dateTextAppearance = dateTextAppearance;
         newAdapter.dateTextTypeface = dateTextTypeface;
@@ -161,15 +154,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         pagerView.setDayFormatter(dayFormatter);
         if (color != null) {
             pagerView.setSelectionColor(color);
-        }
-        if (dateTextColor != null) {
-            pagerView.setDateTextColor(dateTextColor);
-        }  // current date text color after date text color
-        if (currentDateTextColor != null) {
-            pagerView.setCurrentDateTextColor(currentDateTextColor);
-        }
-        if (disabledDateOnThisMonthTextColor != null) {
-            pagerView.setDisabledDateOnThisMonthTextColor(disabledDateOnThisMonthTextColor);
         }
         if (dateTextAppearance != null) {
             pagerView.setDateTextAppearance(dateTextAppearance);
@@ -272,36 +256,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         Typeface typeface = obtainTypeface(tf);
         for (V pagerView : currentViews) {
             pagerView.setDisabledDateOnThisMonthTypeface(typeface);
-        }
-    }
-
-    public void setCurrentDateTextColor(@ColorInt int color) {
-        if (color == 0) {
-            return;
-        }
-        this.currentDateTextColor = color;
-        for (V pagerView : currentViews) {
-            pagerView.setCurrentDateTextColor(color);
-        }
-    }
-
-    public void setDateTextColor(@ColorInt int color) {
-        if (color == 0) {
-            return;
-        }
-        this.dateTextColor = color;
-        for (V pagerView : currentViews) {
-            pagerView.setDateTextColor(color);
-        }
-    }
-
-    public void setDisabledDateOnThisMonthTextColor(@ColorInt int color) {
-        if (color == 0) {
-            return;
-        }
-        this.disabledDateOnThisMonthTextColor = color;
-        for (V pagerView : currentViews) {
-            pagerView.setDisabledDateOnThisMonthTextColor(color);
         }
     }
 
@@ -423,18 +377,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     @NonNull
     public List<CalendarDay> getSelectedDates() {
         return Collections.unmodifiableList(selectedDates);
-    }
-
-    protected int getCurrentDateTextColor() {
-        return currentDateTextColor;
-    }
-
-    protected int getDateTextColor() {
-        return dateTextColor;
-    }
-
-    protected int getDisabledDateOnThisMonthTextColor() {
-        return disabledDateOnThisMonthTextColor;
     }
 
     protected String getCurrentDateTextTypeface() {
