@@ -42,9 +42,11 @@ class DayView extends CheckedTextView {
 
     private static int fadeTime = -1;
     private static ColorStateList colorStateList;
-    private static int inactiveColor = -1;
-    private static int normalColor = -1;
+    static int inactiveColor = -1;
+    static int normalColor = -1;
+    static int textSecondaryColor = -1;
     private static Typeface boldTf;
+    static Typeface disabledTypeface;
     private static int textSize = -1;
 
     private Drawable customBackground = null;
@@ -63,9 +65,11 @@ class DayView extends CheckedTextView {
 
         if (inactiveColor == -1) inactiveColor = getResources().getColor(R.color.inactive);
         if (normalColor == -1) normalColor = getResources().getColor(R.color.textPrimary);
+        if (textSecondaryColor == -1) textSecondaryColor = getResources().getColor(R.color.textSecondary);
         if (fadeTime == -1) fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         if (colorStateList == null) colorStateList = getResources().getColorStateList(R.color.mcv_text_date_light);
         if (boldTf == null) boldTf = TypefaceStore.getInstance(context).get("Montserrat-Bold");
+        if (disabledTypeface == null) disabledTypeface = TypefaceStore.getInstance(context).get("Montserrat-Regular");
         if (textSize == -1) textSize = getResources().getDimensionPixelSize(R.dimen.calendar_tile_text_size);
 
         selectionColor = inactiveColor;
@@ -85,6 +89,10 @@ class DayView extends CheckedTextView {
         }
 
         setDay(day);
+    }
+
+    public boolean isDecoratedDisabled() {
+        return isDecoratedDisabled;
     }
 
     public void setDay(CalendarDay date) {
@@ -157,6 +165,7 @@ class DayView extends CheckedTextView {
 
     private void setEnabled() {
         boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
+        boolean disabled = isDecoratedDisabled;
         super.setEnabled(isInRange && !isDecoratedDisabled);
 
         boolean showOtherMonths = showOtherMonths(showOtherDates);
@@ -178,8 +187,12 @@ class DayView extends CheckedTextView {
         }
 
         if (!isInMonth && shouldBeVisible) {
-            setTextColor(getTextColors().getColorForState(
-                    new int[]{-android.R.attr.state_enabled}, inactiveColor));
+//            setTextColor(getTextColors().getColorForState(new int[]{-android.R.attr.state_enabled}, inactiveColor));
+            setTextColor(inactiveColor);
+            setTypeface(disabledTypeface);
+        }
+        if (disabled || !isInRange) {
+            setTypeface(disabledTypeface);
         }
         setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
     }

@@ -2,5 +2,6 @@
 <resources>
     <color name="inactive">#e3e7ec</color>
     <color name="textPrimary">#3c4d52</color>
+    <color name="textSecondary">#626f7e</color>
     <color name="tiffany">#60cdc5</color>
 </resources>

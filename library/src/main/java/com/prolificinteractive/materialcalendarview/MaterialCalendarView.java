@@ -10,11 +10,11 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -375,13 +374,20 @@ public class MaterialCalendarView extends ViewGroup {
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ));
             setWeekDayTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_weekDayTextFont));
+            // date text appearance is no-op, in order to respect custom color and typeface
             setDateTextAppearance(a.getResourceId(
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
-                    R.style.TextAppearance_MaterialCalendarWidget_Date
+                    R.style.TextAppearance_MaterialCalendarWidget_Date_Active
             ));
+            // custom colors, set date text color before current
+            setDateTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_dateTextColor, normalColor));
+            setCurrentDateTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_currentDateTextColor, normalColor));
+            setDisabledDateOnThisMonthTextColor(a.getColor(R.styleable.MaterialCalendarView_mcv_disabledDateOnThisMonthTextColor, inactiveColor));
+            // custom typeface (fonts), set date typeface before current
+            setDateTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_dateTextFont));
             currentDateTypeface = a.getString(R.styleable.MaterialCalendarView_mcv_currentDateTextFont);
             setCurrentDateTextTypeface(currentDateTypeface);
-            setDateTextTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_dateTextFont));
+            setDisabledDateOnThisMonthTypeface(a.getString(R.styleable.MaterialCalendarView_mcv_disabledDateOnThisMonthTextFont));
             //noinspection ResourceType
             setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
@@ -799,11 +805,28 @@ public class MaterialCalendarView extends ViewGroup {
      * @param resourceId The text appearance resource id.
      */
     public void setDateTextAppearance(int resourceId) {
-//        adapter.setDateTextAppearance(resourceId);
+        // This is disabled by intention, in order to respect custom text color and typeface
+        adapter.setDateTextAppearance(resourceId);
     }
 
     public void setDateTextTypeface(String tf) {
         adapter.setDateTextTypeface(tf);
+    }
+
+    public void setDisabledDateOnThisMonthTypeface(String tf) {
+        adapter.setDisabledDateOnThisMonthTypeface(tf);
+    }
+
+    public void setCurrentDateTextColor(@ColorInt int color) {
+        adapter.setCurrentDateTextColor(color);
+    }
+
+    public void setDateTextColor(@ColorInt int color) {
+        adapter.setDateTextColor(color);
+    }
+
+    public void setDisabledDateOnThisMonthTextColor(@ColorInt int color) {
+        adapter.setDisabledDateOnThisMonthTextColor(color);
     }
 
     /**
@@ -1125,9 +1148,13 @@ public class MaterialCalendarView extends ViewGroup {
     protected Parcelable onSaveInstanceState() {
         SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.color = getSelectionColor();
+        ss.currentDateTextColor = adapter.getCurrentDateTextColor();
+        ss.dateTextColor = adapter.getDateTextColor();
+        ss.disabledDateOnThisMonthTextColor = adapter.getDisabledDateOnThisMonthTextColor();
         ss.currentDateTextTypeface = adapter.getCurrentDateTextTypeface();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
         ss.dateTextTypeface = adapter.getDateTextTypeface();
+        ss.disabledDateOnThisMonthTypeface = adapter.getDisabledDateOnThisMonthTypeface();
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
         ss.weekDayTextTypeface = adapter.getWeekDayTextTypeface();
         ss.showOtherDates = getShowOtherDates();
@@ -1161,9 +1188,13 @@ public class MaterialCalendarView extends ViewGroup {
                 .commit();
 
         setSelectionColor(ss.color);
+        setDateTextColor(ss.dateTextColor);  // set date text color before current
+        setCurrentDateTextColor(ss.currentDateTextColor);
+        setDisabledDateOnThisMonthTextColor(ss.disabledDateOnThisMonthTextColor);
+        setDateTextTypeface(ss.dateTextTypeface);  // set date typeface before current
         setCurrentDateTextTypeface(ss.currentDateTextTypeface);
         setDateTextAppearance(ss.dateTextAppearance);
-        setDateTextTypeface(ss.dateTextTypeface);
+        setDisabledDateOnThisMonthTypeface(ss.disabledDateOnThisMonthTypeface);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
         setWeekDayTextTypeface(ss.weekDayTextTypeface);
         setShowOtherDates(ss.showOtherDates);
@@ -1205,10 +1236,14 @@ public class MaterialCalendarView extends ViewGroup {
 
     public static class SavedState extends BaseSavedState {
 
-        int color = 0;
+        int color = 0;  // selection color
+        int currentDateTextColor = 0;
+        int dateTextColor = 0;
+        int disabledDateOnThisMonthTextColor = 0;
         String currentDateTextTypeface;
         int dateTextAppearance = 0;
         String dateTextTypeface;
+        String disabledDateOnThisMonthTypeface;
         int weekDayTextAppearance = 0;
         String weekDayTextTypeface = null;
         int showOtherDates = SHOW_DEFAULTS;
@@ -1235,8 +1270,15 @@ public class MaterialCalendarView extends ViewGroup {
         public void writeToParcel(@NonNull Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt(color);
+            out.writeInt(currentDateTextColor);
+            out.writeInt(dateTextColor);
+            out.writeInt(disabledDateOnThisMonthTextColor);
+            out.writeString(currentDateTextTypeface);
             out.writeInt(dateTextAppearance);
+            out.writeString(dateTextTypeface);
+            out.writeString(disabledDateOnThisMonthTypeface);
             out.writeInt(weekDayTextAppearance);
+            out.writeString(weekDayTextTypeface);
             out.writeInt(showOtherDates);
             out.writeByte((byte) (allowClickDaysOutsideCurrentMonth ? 1 : 0));
             out.writeParcelable(minDate, 0);
@@ -1268,8 +1310,15 @@ public class MaterialCalendarView extends ViewGroup {
         private SavedState(Parcel in) {
             super(in);
             color = in.readInt();
+            currentDateTextColor = in.readInt();
+            dateTextColor = in.readInt();
+            disabledDateOnThisMonthTextColor = in.readInt();
+            currentDateTextTypeface = in.readString();
             dateTextAppearance = in.readInt();
+            dateTextTypeface = in.readString();
+            disabledDateOnThisMonthTypeface = in.readString();
             weekDayTextAppearance = in.readInt();
+            weekDayTextTypeface = in.readString();
             showOtherDates = in.readInt();
             allowClickDaysOutsideCurrentMonth = in.readByte() != 0;
             ClassLoader loader = CalendarDay.class.getClassLoader();

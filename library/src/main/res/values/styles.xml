@@ -12,6 +12,10 @@
         <item name="android:textColor">@color/mcv_text_date_light</item>
     </style>
 
+    <style name="TextAppearance.MaterialCalendarWidget.Date.Active">
+        <item name="android:textColor">@color/mcv_text_date_light_active</item>
+    </style>
+
     <style name="TextAppearance.MaterialCalendarWidget.WeekDay"
         parent="android:TextAppearance.DeviceDefault.Small">
         <item name="android:textSize">14sp</item>
