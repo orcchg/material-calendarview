@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aludio.acorn.utility.value.TypefaceStore;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
@@ -406,6 +407,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     /* Internal */
     // --------------------------------------------------------------------------------------------
     private Typeface obtainTypeface(String tf) {
-        return TypefaceStore.getInstance(mcv.getContext()).get(tf);
+        return TypefaceStore.get(tf);
     }
 }

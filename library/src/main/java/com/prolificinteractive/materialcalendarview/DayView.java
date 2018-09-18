@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
 
+import com.aludio.acorn.utility.value.TypefaceStore;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
@@ -68,8 +69,8 @@ class DayView extends CheckedTextView {
         if (textSecondaryColor == -1) textSecondaryColor = getResources().getColor(R.color.textSecondary);
         if (fadeTime == -1) fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         if (colorStateList == null) colorStateList = getResources().getColorStateList(R.color.mcv_text_date_light);
-        if (boldTf == null) boldTf = TypefaceStore.getInstance(context).get("Montserrat-Bold");
-        if (disabledTypeface == null) disabledTypeface = TypefaceStore.getInstance(context).get("Montserrat-Regular");
+        if (boldTf == null) boldTf = TypefaceStore.get("Montserrat-Bold");
+        if (disabledTypeface == null) disabledTypeface = TypefaceStore.get("Montserrat-Regular");
         if (textSize == -1) textSize = getResources().getDimensionPixelSize(R.dimen.calendar_tile_text_size);
 
         selectionColor = inactiveColor;

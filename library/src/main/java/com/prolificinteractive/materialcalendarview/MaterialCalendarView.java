@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
-import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aludio.acorn.utility.value.TypefaceStore;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
@@ -2104,6 +2104,6 @@ public class MaterialCalendarView extends ViewGroup {
     /* Internal */
     // --------------------------------------------------------------------------------------------
     private Typeface obtainTypeface(String tf) {
-        return TypefaceStore.getInstance(getContext()).get(tf);
+        return TypefaceStore.get(tf);
     }
 }
